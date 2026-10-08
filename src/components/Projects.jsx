@@ -1,4 +1,5 @@
 import useFadeIn from '../hooks/useFadeIn';
+import { scrollToSection } from '../utils/scroll';
 
 const projects = [
   {
@@ -46,7 +47,7 @@ export default function Projects() {
           ))}
         </div>
         <div className="view-all-link">
-          <a href="#">View All Projects</a>
+          <a href="#projects" onClick={(e) => scrollToSection(e, '#projects')}>View All Projects</a>
         </div>
       </div>
     </section>

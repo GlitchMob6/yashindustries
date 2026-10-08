@@ -1,4 +1,4 @@
-import useFadeIn from '../hooks/useFadeIn';
+import { scrollToSection } from '../utils/scroll';
 
 export default function Hero() {
   return (
@@ -17,10 +17,10 @@ export default function Hero() {
             Boards, and Custom Control Panels — built for reliability across every industry.
           </p>
           <div className="hero-buttons">
-            <a href="#products" className="btn-primary">
+            <a href="#products" className="btn-primary" onClick={(e) => scrollToSection(e, '#products')}>
               Explore Products
             </a>
-            <a href="#contact" className="btn-outline">
+            <a href="#contact" className="btn-outline" onClick={(e) => scrollToSection(e, '#contact')}>
               Contact Us
             </a>
           </div>

@@ -1,4 +1,5 @@
 import { Share2, Globe, MessageCircle } from 'lucide-react';
+import { scrollToSection } from '../utils/scroll';
 
 const quickLinks = [
   { href: '#home', label: 'Home' },
@@ -29,6 +30,7 @@ export default function Footer() {
                   key={link.href}
                   href={link.href}
                   className="footer-link"
+                  onClick={(e) => scrollToSection(e, link.href)}
                 >
                   {link.label}
                 </a>
@@ -46,9 +48,9 @@ export default function Footer() {
           <div>
             <h4 className="footer-heading">Follow Us</h4>
             <div className="social-links">
-              <a href="#" className="social-link" aria-label="LinkedIn"><Share2 /></a>
-              <a href="#" className="social-link" aria-label="Instagram"><Globe /></a>
-              <a href="#" className="social-link" aria-label="Facebook"><MessageCircle /></a>
+              <a href="#" className="social-link" aria-label="LinkedIn" onClick={(e) => scrollToSection(e, '#')}><Share2 /></a>
+              <a href="#" className="social-link" aria-label="Instagram" onClick={(e) => scrollToSection(e, '#')}><Globe /></a>
+              <a href="#" className="social-link" aria-label="Facebook" onClick={(e) => scrollToSection(e, '#')}><MessageCircle /></a>
             </div>
           </div>
         </div>

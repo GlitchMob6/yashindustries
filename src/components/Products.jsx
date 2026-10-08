@@ -1,4 +1,5 @@
 import useFadeIn from '../hooks/useFadeIn';
+import { scrollToSection } from '../utils/scroll';
 
 const products = [
   {
@@ -62,13 +63,13 @@ export default function Products() {
                 <span className="product-category">{product.category}</span>
                 <h3 className="product-name">{product.name}</h3>
                 <p className="product-description">{product.description}</p>
-                <span className="product-link">View Details →</span>
+                <a href="#contact" className="product-link" onClick={(e) => scrollToSection(e, '#contact')}>View Details →</a>
               </div>
             </div>
           ))}
         </div>
         <div className="view-all-link">
-          <a href="#">View All Products</a>
+          <a href="#products" onClick={(e) => scrollToSection(e, '#products')}>View All Products</a>
         </div>
       </div>
     </section>

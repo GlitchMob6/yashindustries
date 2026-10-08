@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
+import { scrollToSection } from '../utils/scroll';
 
 const navLinks = [
   { href: '#home', label: 'Home' },
@@ -23,7 +24,7 @@ export default function Navbar() {
   }, []);
 
   const handleAnchorClick = (e, href) => {
-    setMenuOpen(false);
+    scrollToSection(e, href, setMenuOpen);
   };
 
   return (

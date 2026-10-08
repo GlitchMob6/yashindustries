@@ -1,4 +1,5 @@
 import useFadeIn from '../hooks/useFadeIn';
+import { scrollToSection } from '../utils/scroll';
 
 export default function Gallery() {
   const headerRef = useFadeIn();
@@ -25,7 +26,7 @@ export default function Gallery() {
           ))}
         </div>
         <div className="view-all-link">
-          <a href="#">View Full Gallery</a>
+          <a href="#gallery" onClick={(e) => scrollToSection(e, '#gallery')}>View Full Gallery</a>
         </div>
       </div>
     </section>

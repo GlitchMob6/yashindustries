@@ -51,7 +51,7 @@ input, textarea { font-family: inherit; }
 
 .section-header {
   text-align: center;
-  margin-bottom: 3.5rem;
+  margin-bottom: 4rem;
 }
 
 .section-title {
@@ -290,7 +290,7 @@ input, textarea { font-family: inherit; }
 .about-grid { display: grid; gap: 3rem; align-items: center; }
 .about-title { font-size: clamp(1.75rem, 4vw, 2.25rem); font-weight: 800; letter-spacing: -0.02em; color: var(--white); margin-bottom: 1.5rem; }
 .about-text { color: rgba(255,255,255,0.8); line-height: 1.7; font-size: 1.125rem; margin-bottom: 2rem; }
-.about-cards { display: grid; gap: 1rem; }
+.about-cards { display: grid; gap: 1.5rem; }
 .about-card {
   padding: 1.5rem;
   background-color: var(--white);
@@ -323,13 +323,16 @@ input, textarea { font-family: inherit; }
    PRODUCTS
    =================================== */
 .products-section { padding: clamp(5rem, 8vw, 8rem) 0; }
-.products-grid { display: grid; gap: 1.5rem; }
+.products-grid { display: grid; gap: 2rem; }
 .product-card {
   background-color: var(--white);
   border-radius: 0.5rem;
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0,0,0,0.05);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 .product-card:hover {
   transform: translateY(-4px);
@@ -342,23 +345,28 @@ input, textarea { font-family: inherit; }
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .product-card:hover .product-image { transform: scale(1.03); }
-.product-info { padding: 1.25rem; }
+.product-info {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
 .product-category {
   font-size: 0.75rem; font-weight: 500;
   color: var(--accent);
   text-transform: uppercase;
   letter-spacing: 0.025em;
 }
-.product-name { font-weight: 600; color: var(--navy); margin-top: 0.5rem; margin-bottom: 0.25rem; }
-.product-description { font-size: 0.875rem; color: var(--gray-500); margin-bottom: 0.75rem; }
-.product-link { font-size: 0.875rem; font-weight: 500; color: var(--accent); cursor: pointer; }
-.product-link:hover { text-decoration: underline; }
+.product-name { font-size: 1.25rem; font-weight: 700; color: var(--navy); margin-top: 0.5rem; margin-bottom: 0.5rem; letter-spacing: -0.01em; }
+.product-description { font-size: 0.875rem; color: var(--gray-500); margin-bottom: 1.25rem; line-height: 1.6; flex-grow: 1; }
+.product-link { font-size: 0.875rem; font-weight: 600; color: var(--accent); cursor: pointer; margin-top: auto; display: inline-flex; align-items: center; transition: color 0.3s ease; }
+.product-link:hover { color: var(--accent-dark); }
 
 /* ===================================
    PROJECTS
    =================================== */
 .projects-section { padding: clamp(5rem, 8vw, 8rem) 0; }
-.projects-grid { display: grid; gap: 1.5rem; }
+.projects-grid { display: grid; gap: 2rem; }
 .project-card { position: relative; overflow: hidden; border-radius: 0.5rem; }
 .project-image { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
 .project-card:hover .project-image { transform: scale(1.03); }
@@ -376,7 +384,7 @@ input, textarea { font-family: inherit; }
    INDUSTRIES
    =================================== */
 .industries-section { padding: clamp(5rem, 8vw, 8rem) 0; }
-.industries-grid { display: grid; gap: 1.5rem; }
+.industries-grid { display: grid; gap: 2rem; }
 .industry-card { position: relative; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 0.5rem; }
 .industry-image { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
 .industry-card:hover .industry-image { transform: scale(1.03); }
@@ -451,7 +459,7 @@ input, textarea { font-family: inherit; }
    =================================== */
 .achievements-section { padding: clamp(5rem, 8vw, 8rem) 0; }
 
-.cert-grid { display: grid; gap: 1.5rem; }
+.cert-grid { display: grid; gap: 2rem; }
 
 .cert-card {
   background-color: var(--white);
@@ -501,7 +509,7 @@ input, textarea { font-family: inherit; }
    CAREERS
    =================================== */
 .careers-section { padding: clamp(5rem, 8vw, 8rem) 0; }
-.careers-grid { display: grid; gap: 1.5rem; }
+.careers-grid { display: grid; gap: 2rem; }
 .job-card {
   padding: 1.5rem;
   background-color: var(--white);
@@ -663,3 +671,4 @@ input, textarea { font-family: inherit; }
   .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr; }
   .features-row-bottom { max-width: 50%; }
 }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }

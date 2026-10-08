@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import useFadeIn from '../hooks/useFadeIn';
+import { scrollToSection } from '../utils/scroll';
 
 const visibleJobs = [
   { title: 'Designer', info: 'Full-time • On-site' },
@@ -20,7 +21,7 @@ function JobCard({ job }) {
         <h4 className="job-title">{job.title}</h4>
         <p className="job-info">{job.info}</p>
       </div>
-      <span className="job-apply">Apply →</span>
+      <a href="#contact" className="job-apply" onClick={(e) => scrollToSection(e, '#contact')}>Apply →</a>
     </div>
   );
 }
