@@ -17,12 +17,10 @@ export default function Hero() {
             Boards, and Custom Control Panels — built for reliability across every industry.
           </p>
           <div className="hero-buttons">
-            <a href="#products" className="btn-primary"
-              onClick={(e) => { e.preventDefault(); document.querySelector('#products')?.scrollIntoView({ behavior: 'smooth' }); }}>
+            <a href="#products" className="btn-primary">
               Explore Products
             </a>
-            <a href="#contact" className="btn-outline"
-              onClick={(e) => { e.preventDefault(); document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }); }}>
+            <a href="#contact" className="btn-outline">
               Contact Us
             </a>
           </div>

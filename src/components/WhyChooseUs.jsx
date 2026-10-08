@@ -38,7 +38,7 @@ export default function WhyChooseUs() {
   const layoutRef = useFadeIn();
 
   return (
-    <section className="why-section">
+    <section id="why" className="why-section">
       <div className="container">
         <div ref={headerRef} className="section-header fade">
           <h2 className="section-title">Why Choose Us</h2>

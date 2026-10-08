@@ -23,10 +23,7 @@ export default function Navbar() {
   }, []);
 
   const handleAnchorClick = (e, href) => {
-    e.preventDefault();
     setMenuOpen(false);
-    const target = document.querySelector(href);
-    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (

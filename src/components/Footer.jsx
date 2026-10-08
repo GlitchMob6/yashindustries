@@ -9,11 +9,6 @@ const quickLinks = [
   { href: '#contact', label: 'Contact' },
 ];
 
-const handleAnchor = (e, href) => {
-  e.preventDefault();
-  const el = document.querySelector(href);
-  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-};
 
 export default function Footer() {
   return (
@@ -34,7 +29,6 @@ export default function Footer() {
                   key={link.href}
                   href={link.href}
                   className="footer-link"
-                  onClick={(e) => handleAnchor(e, link.href)}
                 >
                   {link.label}
                 </a>
