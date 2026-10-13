@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import useFadeIn from '../hooks/useFadeIn';
-import { scrollToSection } from '../utils/scroll';
 
 const fallbackProducts = [
   {
@@ -41,10 +40,10 @@ const fallbackProducts = [
   },
 ];
 
-export default function Products() {
+export default function Products({ onOpenQuote }) {
   const [products, setProducts] = useState(fallbackProducts);
   const headerRef = useFadeIn();
-  const gridRef = useFadeIn();
+  const gridRef   = useFadeIn();
 
   useEffect(() => {
     fetch('/api/index.php?route=products')
@@ -54,8 +53,18 @@ export default function Products() {
           setProducts(data);
         }
       })
-      .catch(err => console.error("Could not load products, using fallback", err));
+      .catch(err => console.error('Could not load products, using fallback', err));
   }, []);
+
+  const handleGetQuote = (e, product) => {
+    e.preventDefault();
+    // Pass the product object so the modal can prefill it.
+    // product.id exists only for DB-sourced products; fallback products have no id.
+    onOpenQuote({
+      id:   product.id   ?? null,
+      name: product.name ?? '',
+    });
+  };
 
   return (
     <section id="products" className="products-section">
@@ -76,17 +85,19 @@ export default function Products() {
                 <span className="product-category">{product.category}</span>
                 <h3 className="product-name">{product.name}</h3>
                 <p className="product-description">{product.description}</p>
-                <a href="#contact" className="product-link" onClick={(e) => {
-                  // Dispatch custom event so Contact form can pre-select product
-                  window.dispatchEvent(new CustomEvent('selectProduct', { detail: product.id || product.name }));
-                  scrollToSection(e, '#contact');
-                }}>Get Quote →</a>
+                <button
+                  className="product-link"
+                  onClick={(e) => handleGetQuote(e, product)}
+                  aria-label={`Get a quote for ${product.name}`}
+                >
+                  Get Quote →
+                </button>
               </div>
             </div>
           ))}
         </div>
         <div className="view-all-link">
-          <a href="#products" onClick={(e) => scrollToSection(e, '#products')}>View All Products</a>
+          <a href="#products">View All Products</a>
         </div>
       </div>
     </section>

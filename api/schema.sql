@@ -49,3 +49,22 @@ INSERT INTO `products` (`slug`, `name`, `description`, `category`, `image_path`,
 ('vfd-panel', 'VFD Panel', 'Variable Frequency Drive panels for precise speed control.', 'DRIVES', '/images/vfd.jpg', 1),
 ('custom-control-panel', 'Custom Control Panel', 'Bespoke control panels tailored to your unique industrial requirements.', 'CUSTOM', '/images/custom.jpg', 1)
 ON DUPLICATE KEY UPDATE `id`=`id`;
+
+-- Job Applications table (added 2026 — run api/migrations/2026_add_job_applications.sql on existing databases)
+CREATE TABLE IF NOT EXISTS `job_applications` (
+  `id`         INT AUTO_INCREMENT PRIMARY KEY,
+  `app_ref`    VARCHAR(20)  NOT NULL UNIQUE,
+  `name`       VARCHAR(150) NOT NULL,
+  `email`      VARCHAR(150) NOT NULL,
+  `phone`      VARCHAR(30)  NOT NULL,
+  `location`   VARCHAR(150),
+  `position`   VARCHAR(100) NOT NULL,
+  `experience` ENUM('Fresher','1–3 years','3–5 years','5+ years') NOT NULL,
+  `resume_url` VARCHAR(500),
+  `message`    TEXT         NOT NULL,
+  `status`     ENUM('New','Reviewing','Shortlisted','Rejected') DEFAULT 'New',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_ja_status  (`status`),
+  INDEX idx_ja_created (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

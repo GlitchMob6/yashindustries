@@ -3,19 +3,19 @@ import { Menu, X } from 'lucide-react';
 import { scrollToSection } from '../utils/scroll';
 
 const navLinks = [
-  { href: '#home', label: 'Home' },
-  { href: '#about', label: 'About' },
-  { href: '#products', label: 'Products' },
-  { href: '#projects', label: 'Projects' },
-  { href: '#industries', label: 'Industries' },
+  { href: '#home',         label: 'Home' },
+  { href: '#about',        label: 'About' },
+  { href: '#products',     label: 'Products' },
+  { href: '#projects',     label: 'Projects' },
+  { href: '#industries',   label: 'Industries' },
   { href: '#achievements', label: 'Achievements' },
-  { href: '#careers', label: 'Careers' },
-  { href: '#contact', label: 'Contact' },
+  { href: '#careers',      label: 'Careers' },
+  { href: '#contact',      label: 'Contact' },
 ];
 
-export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+export default function Navbar({ onOpenQuote }) {
+  const [scrolled,  setScrolled]  = useState(false);
+  const [menuOpen,  setMenuOpen]  = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -25,6 +25,12 @@ export default function Navbar() {
 
   const handleAnchorClick = (e, href) => {
     scrollToSection(e, href, setMenuOpen);
+  };
+
+  const handleQuoteClick = (e) => {
+    e.preventDefault();
+    setMenuOpen(false);
+    onOpenQuote(null); // generic quote — no product preselected
   };
 
   return (
@@ -47,12 +53,17 @@ export default function Navbar() {
             ))}
           </div>
           <div className="nav-actions">
-            <a href="#contact" className="btn-quote" onClick={(e) => handleAnchorClick(e, '#contact')}>
+            <button
+              className="btn-quote"
+              onClick={handleQuoteClick}
+              aria-label="Get a Quote"
+            >
               Get a Quote
-            </a>
+            </button>
             <button
               className="toggle"
               aria-label="Toggle menu"
+              aria-expanded={menuOpen}
               onClick={() => setMenuOpen(!menuOpen)}
             >
               {menuOpen ? <X /> : <Menu />}
@@ -73,6 +84,12 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
+          <button
+            className="menu-quote-btn"
+            onClick={handleQuoteClick}
+          >
+            Get a Quote
+          </button>
         </div>
       </div>
     </nav>

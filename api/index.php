@@ -67,13 +67,18 @@ try {
     elseif ($route === 'dashboard' && $method === 'GET') {
         requireAuth();
         global $pdo;
-        
+
+        // Check if job_applications table exists (graceful for pre-migration deploys)
+        $appTable = $pdo->query("SHOW TABLES LIKE 'job_applications'")->fetchColumn();
+
         $stats = [
-            'total_products' => $pdo->query("SELECT COUNT(*) FROM products")->fetchColumn(),
-            'total_inquiries' => $pdo->query("SELECT COUNT(*) FROM inquiries")->fetchColumn(),
-            'new_inquiries' => $pdo->query("SELECT COUNT(*) FROM inquiries WHERE status = 'New'")->fetchColumn(),
+            'total_products'      => $pdo->query("SELECT COUNT(*) FROM products")->fetchColumn(),
+            'total_inquiries'     => $pdo->query("SELECT COUNT(*) FROM inquiries")->fetchColumn(),
+            'new_inquiries'       => $pdo->query("SELECT COUNT(*) FROM inquiries WHERE status = 'New'")->fetchColumn(),
             'inquiries_by_status' => $pdo->query("SELECT status, COUNT(*) as count FROM inquiries GROUP BY status")->fetchAll(),
-            'recent_inquiries' => $pdo->query("SELECT * FROM inquiries ORDER BY created_at DESC LIMIT 5")->fetchAll()
+            'recent_inquiries'    => $pdo->query("SELECT * FROM inquiries ORDER BY created_at DESC LIMIT 5")->fetchAll(),
+            'total_applications'  => $appTable ? (int)$pdo->query("SELECT COUNT(*) FROM job_applications")->fetchColumn() : 0,
+            'new_applications'    => $appTable ? (int)$pdo->query("SELECT COUNT(*) FROM job_applications WHERE status = 'New'")->fetchColumn() : 0,
         ];
         sendResponse($stats);
     }
@@ -166,6 +171,93 @@ try {
             $stmt = $pdo->prepare("UPDATE inquiries SET status=?, internal_notes=? WHERE id=?");
             $stmt->execute([$status, $internal_notes, $id]);
             sendResponse(['message' => 'Inquiry updated']);
+        }
+    }
+
+    elseif ($route === 'job-application' && $method === 'POST') {
+        global $pdo;
+
+        $name        = trim($input['name']       ?? '');
+        $email       = trim($input['email']      ?? '');
+        $phone       = trim($input['phone']       ?? '');
+        $location    = trim($input['location']    ?? '');
+        $position    = trim($input['position']    ?? '');
+        $experience  = trim($input['experience']  ?? '');
+        $resume_url  = trim($input['resume_url']  ?? '');
+        $message     = trim($input['message']     ?? '');
+
+        // Server-side validation
+        $errors = [];
+        if (empty($name))       $errors[] = 'Full name is required.';
+        if (empty($email))      $errors[] = 'Email is required.';
+        elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Invalid email address.';
+        if (empty($phone))      $errors[] = 'Phone is required.';
+        if (empty($position))   $errors[] = 'Position is required.';
+        if (empty($experience)) $errors[] = 'Experience level is required.';
+        if (empty($message))    $errors[] = 'Introduction/cover note is required.';
+
+        $allowed_exp = ['Fresher', '1–3 years', '3–5 years', '5+ years'];
+        if (!empty($experience) && !in_array($experience, $allowed_exp))
+            $errors[] = 'Invalid experience level.';
+
+        if (!empty($resume_url) && !preg_match('/^https?:\/\/.+/', $resume_url))
+            $errors[] = 'Resume URL must start with http:// or https://.';
+
+        // Length caps
+        if (strlen($name)       > 150) $errors[] = 'Name is too long.';
+        if (strlen($email)      > 150) $errors[] = 'Email is too long.';
+        if (strlen($phone)      > 30)  $errors[] = 'Phone is too long.';
+        if (strlen($position)   > 100) $errors[] = 'Position is too long.';
+        if (strlen($resume_url) > 500) $errors[] = 'Resume URL is too long.';
+
+        if (!empty($errors)) {
+            sendResponse(['error' => implode(' ', $errors)], 400);
+        }
+
+        // Unique application reference
+        $app_ref = 'APP-' . strtoupper(substr(uniqid(), -8));
+
+        $stmt = $pdo->prepare(
+            "INSERT INTO job_applications
+             (app_ref, name, email, phone, location, position, experience, resume_url, message)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        );
+        $stmt->execute([
+            $app_ref, $name, $email, $phone,
+            $location, $position, $experience, $resume_url, $message
+        ]);
+
+        sendResponse([
+            'message'         => 'Application submitted successfully.',
+            'application_ref' => $app_ref,
+        ]);
+    }
+
+    elseif ($route === 'applications') {
+        requireAuth();
+        global $pdo;
+
+        if ($method === 'GET') {
+            $stmt = $pdo->query(
+                "SELECT id, app_ref, name, email, phone, location, position,
+                        experience, resume_url, message, status, created_at
+                 FROM job_applications
+                 ORDER BY created_at DESC"
+            );
+            sendResponse($stmt->fetchAll());
+        }
+        elseif ($method === 'PUT') {
+            $id     = (int)($input['id']     ?? 0);
+            $status = trim($input['status']  ?? '');
+
+            $allowed = ['New', 'Reviewing', 'Shortlisted', 'Rejected'];
+            if (!$id || !in_array($status, $allowed)) {
+                sendResponse(['error' => 'Invalid id or status.'], 400);
+            }
+
+            $stmt = $pdo->prepare("UPDATE job_applications SET status=? WHERE id=?");
+            $stmt->execute([$status, $id]);
+            sendResponse(['message' => 'Application status updated.']);
         }
     }
 
