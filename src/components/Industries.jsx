@@ -1,12 +1,31 @@
+import { Factory, Settings2, Building2, GraduationCap } from 'lucide-react';
 import useFadeIn from '../hooks/useFadeIn';
 
 const industries = [
-  { name: 'Manufacturing', description: 'MCC & PCC panels for factory floors.', image: '/images/ind_manufacturing_1791436499527.jpg' },
-  { name: 'Automotive', description: 'VFD panels for conveyor and assembly lines.', image: '/images/ind_automotive_1791436515597.jpg' },
-  { name: 'Energy & Power', description: 'APFC panels for power factor improvement.', image: '/images/proj_apfc_1791436419208.jpg' },
-  { name: 'Infrastructure', description: 'Distribution boards for commercial buildings.', image: '/images/proj_distribution_1791436405561.jpg' },
-  { name: 'Construction', description: 'Robust panels for site and heavy machinery.', image: '/images/proj_installation_1791436387408.jpg' },
-  { name: 'Textile', description: 'Control panels for automated textile machines.', image: '/images/ind_manufacturing_1791436499527.jpg' },
+  {
+    Icon: Factory,
+    title: 'Industrial & Manufacturing',
+    description:
+      'Robust electrical panel solutions built for demanding factory environments and continuous production operations.',
+  },
+  {
+    Icon: Settings2,
+    title: 'Automation & Control',
+    description:
+      'Precision control panels that integrate seamlessly with automated processes and machinery control systems.',
+  },
+  {
+    Icon: Building2,
+    title: 'Commercial Establishments',
+    description:
+      'Reliable distribution and power management solutions for offices, retail spaces, and commercial buildings.',
+  },
+  {
+    Icon: GraduationCap,
+    title: 'Educational Institutions',
+    description:
+      'Safe, dependable electrical infrastructure for schools, colleges, and technical institutes.',
+  },
 ];
 
 export default function Industries() {
@@ -16,19 +35,24 @@ export default function Industries() {
   return (
     <section id="industries" className="industries-section">
       <div className="container">
+        {/* Section Header */}
         <div ref={headerRef} className="section-header fade">
           <h2 className="section-title">Industries We Serve</h2>
-          <p className="section-subtitle">Delivering LV panel solutions across multiple sectors.</p>
+          <p className="section-subtitle">
+            Electrical panel solutions tailored to the needs of businesses,
+            industrial operations and institutions.
+          </p>
         </div>
-        <div ref={gridRef} className="industries-grid fade">
-          {industries.map((industry) => (
-            <div key={industry.name} className="industry-card">
-              <img src={industry.image} className="industry-image" loading="lazy" alt={industry.name} />
-              <div className="industry-overlay" />
-              <div className="industry-content">
-                <h3 className="industry-name">{industry.name}</h3>
-                <p className="industry-description">{industry.description}</p>
+
+        {/* Sector Cards */}
+        <div ref={gridRef} className="industries-sector-grid fade">
+          {industries.map(({ Icon, title, description }) => (
+            <div key={title} className="industry-sector-card">
+              <div className="industry-sector-icon" aria-hidden="true">
+                <Icon size={28} strokeWidth={1.5} />
               </div>
+              <h3 className="industry-sector-title">{title}</h3>
+              <p className="industry-sector-description">{description}</p>
             </div>
           ))}
         </div>

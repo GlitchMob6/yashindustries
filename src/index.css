@@ -376,48 +376,156 @@ input, textarea { font-family: inherit; }
 .product-link:hover { color: var(--accent-dark); }
 
 /* ===================================
-   PROJECTS
+   PROJECTS — sticker-style, image-free
    =================================== */
 .projects-section { padding: clamp(5rem, 8vw, 8rem) 0; }
-.projects-grid { display: grid; gap: 2rem; }
-.project-card { position: relative; overflow: hidden; border-radius: 0.5rem; }
-.project-image { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
-.project-card:hover .project-image { transform: scale(1.03); }
-.project-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(to top, var(--navy), rgba(15,27,45,0.4), transparent);
-}
-.project-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.25rem; }
-.project-category { font-size: 0.75rem; color: var(--accent); font-weight: 500; text-transform: uppercase; letter-spacing: 0.025em; }
-.project-name { color: var(--white); font-weight: 600; margin-top: 0.25rem; }
-.project-client { color: rgba(255,255,255,0.6); font-size: 0.875rem; margin-top: 0.25rem; }
-.projects-section .view-all-link a { color: var(--accent); }
 
-/* ===================================
-   INDUSTRIES
-   =================================== */
-.industries-section { padding: clamp(5rem, 8vw, 8rem) 0; }
-.industries-grid { display: grid; gap: 2rem; }
-.industry-card { position: relative; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 0.5rem; }
-.industry-image { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
-.industry-card:hover .industry-image { transform: scale(1.03); }
-.industry-overlay {
-  position: absolute; inset: 0;
-  background-color: rgba(15,27,45,0.6);
-  transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+.projects-sticker-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
 }
-.industry-card:hover .industry-overlay { background-color: rgba(15,27,45,0.7); }
-.industry-content {
-  position: absolute; inset: 0;
+
+.project-sticker-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background-color: var(--charcoal);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.5rem;
+  transition: border-color 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
+}
+.project-sticker-card:hover {
+  border-color: rgba(14,165,233,0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(14,165,233,0.1);
+}
+
+.project-sticker-id {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  background-color: rgba(14,165,233,0.1);
+  border: 1px solid rgba(14,165,233,0.2);
+  border-radius: 0.25rem;
+  padding: 0.2rem 0.45rem;
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  line-height: 1.4;
+}
+
+.project-sticker-body {
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
+}
+
+.project-sticker-client {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.project-sticker-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.55);
+  background-color: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  width: fit-content;
+}
+
+/* Show All / Show Less toggle */
+.projects-toggle-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.projects-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.75rem 1.75rem;
+  background-color: transparent;
+  color: var(--accent);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border: 1px solid rgba(14,165,233,0.45);
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+.projects-toggle-btn:hover {
+  background-color: rgba(14,165,233,0.08);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+.projects-toggle-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ===================================
+   INDUSTRIES — sector cards, image-free
+   =================================== */
+.industries-section { padding: clamp(5rem, 8vw, 8rem) 0; }
+
+.industries-sector-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+.industry-sector-card {
+  padding: 1.75rem 1.5rem;
+  background-color: var(--charcoal);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.5rem;
+  transition: border-color 0.35s ease, transform 0.35s ease;
+}
+.industry-sector-card:hover {
+  border-color: rgba(14,165,233,0.35);
+  transform: translateY(-3px);
+}
+
+.industry-sector-icon {
+  display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  padding: 1rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid rgba(14,165,233,0.3);
+  border-radius: 0.375rem;
+  color: var(--accent);
+  margin-bottom: 1rem;
 }
-.industry-name { color: var(--white); font-weight: 700; font-size: 1.125rem; }
-.industry-description { color: rgba(255,255,255,0.7); font-size: 0.875rem; margin-top: 0.5rem; }
+
+.industry-sector-title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.01em;
+  margin-bottom: 0.5rem;
+}
+
+.industry-sector-description {
+  font-size: 0.875rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.6;
+}
 
 /* ===================================
    WHY CHOOSE US - W LAYOUT
@@ -552,7 +660,8 @@ input, textarea { font-family: inherit; }
 .contact-details { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; }
 .contact-item { display: flex; align-items: center; gap: 0.75rem; }
 .contact-item svg { width: 1.25rem; height: 1.25rem; color: var(--accent); flex-shrink: 0; }
-.contact-item p { color: rgba(255,255,255,0.8); }
+.contact-item p, .contact-item a { color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.15s ease; }
+.contact-item a:hover { color: var(--white); }
 .map-placeholder {
   height: 12rem;
   background-color: var(--charcoal);
@@ -625,7 +734,8 @@ input, textarea { font-family: inherit; }
 .footer-link { font-size: 0.875rem; color: rgba(255,255,255,0.5); transition: color 0.15s ease; }
 .footer-link:hover { color: var(--white); }
 .footer-contact-info { display: flex; flex-direction: column; gap: 0.5rem; }
-.footer-contact-info p { font-size: 0.875rem; color: rgba(255,255,255,0.5); }
+.footer-contact-info p, .footer-contact-info a { font-size: 0.875rem; color: rgba(255,255,255,0.5); text-decoration: none; transition: color 0.15s ease; }
+.footer-contact-info a:hover { color: var(--white); }
 .social-links { display: flex; gap: 1rem; }
 .social-link {
   width: 2.5rem; height: 2.5rem;
@@ -661,11 +771,14 @@ input, textarea { font-family: inherit; }
 /* ===================================
    RESPONSIVE - Tablet
    =================================== */
+@media (min-width: 480px) {
+  .projects-sticker-grid { grid-template-columns: repeat(2, 1fr); }
+  .industries-sector-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
 @media (min-width: 640px) {
   .about-cards { grid-template-columns: repeat(2, 1fr); }
   .products-grid { grid-template-columns: repeat(2, 1fr); }
-  .projects-grid { grid-template-columns: repeat(2, 1fr); }
-  .industries-grid { grid-template-columns: repeat(2, 1fr); }
   .cert-grid { grid-template-columns: repeat(2, 1fr); }
   .careers-grid { grid-template-columns: 1fr; }
   .gallery-grid { columns: 3; }
@@ -689,8 +802,8 @@ input, textarea { font-family: inherit; }
   .about-grid { grid-template-columns: 1fr 1fr; }
   .products-grid { grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
   .product-image { aspect-ratio: 16 / 9; }
-  .projects-grid { grid-template-columns: repeat(3, 1fr); }
-  .industries-grid { grid-template-columns: repeat(3, 1fr); }
+  .projects-sticker-grid { grid-template-columns: repeat(3, 1fr); }
+  .industries-sector-grid { grid-template-columns: repeat(4, 1fr); }
   .cert-grid { grid-template-columns: repeat(3, 1fr); }
   .careers-grid { grid-template-columns: 1fr; }
   .contact-grid { grid-template-columns: 1fr 1fr; }

@@ -40,8 +40,8 @@ export default function Footer() {
           <div>
             <h4 className="footer-heading">Contact</h4>
             <div className="footer-contact-info">
-              <p>+91 98765 43210</p>
-              <p>contact@yashindustries.com</p>
+              <a href="tel:+918805603951">+91 88056 03951</a>
+              <a href="mailto:yashindustries@rediffmail.com">yashindustries@rediffmail.com</a>
               <p>MIDC Industrial Area, Nashik, MH</p>
             </div>
           </div>

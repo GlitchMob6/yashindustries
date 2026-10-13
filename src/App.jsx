@@ -1,4 +1,5 @@
 import './index.css';
+import { useState } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -10,8 +11,15 @@ import Achievements from './components/Achievements';
 import Careers from './components/Careers';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import Admin from './components/Admin';
 
 function App() {
+  const [isAdminRoute] = useState(() => window.location.pathname.startsWith('/admin'));
+
+  if (isAdminRoute) {
+    return <Admin />;
+  }
+
   return (
     <>
       <Navbar />
