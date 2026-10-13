@@ -1,5 +1,5 @@
 import './index.css';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useLayoutEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -16,6 +16,38 @@ import ConversionModals from './components/ConversionModals';
 
 function App() {
   const [isAdminRoute] = useState(() => window.location.pathname.startsWith('/admin'));
+
+  // Reset scroll and normalize URL hash on fresh homepage load / refresh
+  useLayoutEffect(() => {
+    if (isAdminRoute) return;
+
+    // 1. Disable browser's automatic restoration of previous scroll position
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
+    // 2. Clear stale in-page fragment (e.g. #contact) without creating a new history entry
+    if (window.location.hash) {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+
+    // 3. Reset scroll position to top
+    try {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    } catch {
+      window.scrollTo(0, 0);
+    }
+
+    const rId = requestAnimationFrame(() => {
+      try {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      } catch {
+        window.scrollTo(0, 0);
+      }
+    });
+
+    return () => cancelAnimationFrame(rId);
+  }, [isAdminRoute]);
 
   // Modal state: type is 'quote' | 'apply' | null
   const [modalType, setModalType] = useState(null);

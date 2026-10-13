@@ -116,12 +116,12 @@ function QuoteModal({ initialProduct, onClose }) {
   };
 
   const rules = [
-    { key: 'name',     label: 'Full name',  required: true },
-    { key: 'phone',    label: 'Phone',      required: true },
-    { key: 'product',  label: 'Product',    required: true },
-    { key: 'quantity', label: 'Quantity',   required: true, type: 'qty' },
+    { key: 'name',     label: 'Full Name',  required: true },
+    { key: 'phone',    label: 'Phone Number', required: true },
+    { key: 'product',  label: 'Product of Interest', required: true },
+    { key: 'quantity', label: 'Quantity Required', required: true, type: 'qty' },
     { key: 'specs',    label: 'Additional requirements', required: true },
-    { key: 'email',    label: 'Email',      required: false, type: 'email' },
+    { key: 'email',    label: 'Email Address', required: false, type: 'email' },
   ];
 
   const handleSubmit = async (e) => {
@@ -222,10 +222,10 @@ function QuoteModal({ initialProduct, onClose }) {
             </div>
 
             <div className="cm-form-row">
-              <FormGroup id="cm-q-phone" label="Phone" required>
+              <FormGroup id="cm-q-phone" label="Phone Number" required>
                 <input id="cm-q-phone" className="cm-input" type="tel"   value={form.phone} onChange={set('phone')} autoComplete="tel" />
               </FormGroup>
-              <FormGroup id="cm-q-email" label="Email" required={false}>
+              <FormGroup id="cm-q-email" label="Email Address" required={false}>
                 <input id="cm-q-email" className="cm-input" type="email" value={form.email} onChange={set('email')} autoComplete="email" />
               </FormGroup>
             </div>
@@ -322,13 +322,13 @@ function ApplyModal({ initialJob, onClose }) {
   const set = (key) => (e) => setForm(f => ({ ...f, [key]: e.target.value }));
 
   const rules = [
-    { key: 'name',       label: 'Full name',    required: true },
-    { key: 'email',      label: 'Email',         required: true, type: 'email' },
-    { key: 'phone',      label: 'Phone',          required: true },
-    { key: 'position',   label: 'Position',       required: true },
-    { key: 'experience', label: 'Experience',     required: true },
-    { key: 'message',    label: 'Introduction',   required: true },
-    { key: 'resumeUrl',  label: 'Resume/Portfolio URL', required: false, type: 'url' },
+    { key: 'name',       label: 'Full Name',            required: true },
+    { key: 'email',      label: 'Email Address',        required: true, type: 'email' },
+    { key: 'phone',      label: 'Phone Number',         required: true },
+    { key: 'position',   label: 'Position Applied For', required: true },
+    { key: 'experience', label: 'Experience Level',     required: true },
+    { key: 'message',    label: 'Introduction',         required: true },
+    { key: 'resumeUrl',  label: 'Resume / Portfolio URL', required: false, type: 'url' },
   ];
 
   const handleSubmit = async (e) => {
@@ -423,22 +423,22 @@ function ApplyModal({ initialJob, onClose }) {
               <FormGroup id="cm-a-name"  label="Full Name"     required>
                 <input id="cm-a-name"  className="cm-input" type="text"  value={form.name}  onChange={set('name')}  autoComplete="name" />
               </FormGroup>
-              <FormGroup id="cm-a-phone" label="Phone"          required>
-                <input id="cm-a-phone" className="cm-input" type="tel"   value={form.phone} onChange={set('phone')} autoComplete="tel" />
+              <FormGroup id="cm-a-email" label="Email Address" required>
+                <input id="cm-a-email" className="cm-input" type="email" value={form.email} onChange={set('email')} autoComplete="email" />
               </FormGroup>
             </div>
 
             <div className="cm-form-row">
-              <FormGroup id="cm-a-email" label="Email" required>
-                <input id="cm-a-email" className="cm-input" type="email" value={form.email} onChange={set('email')} autoComplete="email" />
+              <FormGroup id="cm-a-phone" label="Phone Number"  required>
+                <input id="cm-a-phone" className="cm-input" type="tel"   value={form.phone} onChange={set('phone')} autoComplete="tel" />
               </FormGroup>
-              <FormGroup id="cm-a-location" label="Current City / Location" required={false}>
+              <FormGroup id="cm-a-location" label="Current Location" required={false}>
                 <input id="cm-a-location" className="cm-input" type="text" value={form.location} onChange={set('location')} autoComplete="address-level2" />
               </FormGroup>
             </div>
 
             <div className="cm-form-row">
-              <FormGroup id="cm-a-position" label="Position / Area of Interest" required>
+              <FormGroup id="cm-a-position" label="Position Applied For" required>
                 <select id="cm-a-position" className="cm-input" value={form.position} onChange={set('position')}>
                   <option value="">— Select a position —</option>
                   {POSITIONS.map(p => <option key={p} value={p}>{p}</option>)}
@@ -469,7 +469,7 @@ function ApplyModal({ initialJob, onClose }) {
               </a>
             </p>
 
-            <FormGroup id="cm-a-message" label="Short Introduction / Cover Note" required>
+            <FormGroup id="cm-a-message" label="Introduction" required>
               <textarea
                 id="cm-a-message"
                 className="cm-textarea"

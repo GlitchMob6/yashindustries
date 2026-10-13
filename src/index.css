@@ -14,6 +14,7 @@
   --gray-100: #f3f4f6;
   --gray-500: #6b7280;
   --gray-600: #4b5563;
+  --gray-700: #374151;
   --gray-900: #111827;
 }
 
@@ -876,6 +877,7 @@ body.cm-body-locked { overflow: hidden; }
   max-height: 90vh;
   overflow-y: auto;
   background: var(--white);
+  color: var(--gray-900);
   border-radius: 0.75rem;
   box-shadow: 0 20px 60px rgba(0,0,0,0.25), 0 4px 16px rgba(0,0,0,0.1);
   animation: cm-slide-up 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -940,11 +942,17 @@ body.cm-body-locked { overflow: hidden; }
   margin-bottom: 1rem;
 }
 .cm-form-label {
+  display: block;
   font-size: 0.875rem;
   font-weight: 600;
+  line-height: 1.25;
   color: var(--gray-700);
 }
-.cm-required { color: #dc2626; }
+.cm-required {
+  color: #dc2626;
+  font-weight: 600;
+  margin-left: 0.125rem;
+}
 .cm-input, .cm-textarea {
   width: 100%;
   padding: 0.625rem 0.75rem;
