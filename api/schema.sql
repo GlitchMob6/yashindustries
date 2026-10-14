@@ -34,10 +34,10 @@ CREATE TABLE IF NOT EXISTS `inquiries` (
   FOREIGN KEY (`product_id`) REFERENCES `products`(`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Insert a default admin account (password: Admin@Yash2026)
+-- Insert a default admin account (password: root)
 -- Hash generated via standard password_hash() using BCRYPT
 INSERT INTO `admins` (`username`, `password_hash`) 
-SELECT 'admin', '$2y$10$w09ZJ/E9f5W8G.G6/H8zRejI2aXb6bM6mH.KjUqTzW.n5O.YVqO6W' 
+SELECT 'admin', '$2y$10$9jrlCtlbvfIT9xdZRcEcrefjQZm8IWIvh6jUHG8ojr7h202r6eQdO' 
 WHERE NOT EXISTS (SELECT 1 FROM `admins` WHERE `username` = 'admin');
 
 -- Seed existing products
