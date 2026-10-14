@@ -84,18 +84,6 @@ export default function Contact() {
               <div className="contact-item"><MapPin /><p>MIDC Industrial Area, Nashik, Maharashtra</p></div>
               <div className="contact-item"><Clock /><p>Mon–Sat: 9:00 AM – 6:00 PM</p></div>
             </div>
-            <div className="map-wrapper">
-              <iframe
-                title="Yash Industries Location Map"
-                src="https://maps.google.com/maps?q=MIDC+Industrial+Area,+Nashik,+Maharashtra&t=&z=14&ie=UTF8&iwloc=&output=embed"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen=""
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-            </div>
           </div>
           <div>
             <form id="form" className="contact-form" onSubmit={handleSubmit}>
