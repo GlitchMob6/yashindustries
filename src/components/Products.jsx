@@ -40,10 +40,21 @@ const fallbackProducts = [
   },
 ];
 
+// These local images ship with the frontend, so they can recover a product card
+// if a database image URL/path is stale or points to an unavailable upload.
+const fallbackImageByProductName = {
+  'MCC Panel': '/images/mcc_panel_1791435907074.jpg',
+  'PCC Panel': '/images/pcc_panel_1791435921126.jpg',
+  'VFD Panel': '/images/vfd_panel_1791435937888.jpg',
+  'APFC Panel': '/images/apfc_panel_1791435963764.jpg',
+  'Distribution Board': '/images/distribution_board_1791435976000.jpg',
+  'Control Panel': '/images/control_panel_1791435990845.jpg',
+};
+
 export default function Products({ onOpenQuote }) {
   const [products, setProducts] = useState(fallbackProducts);
   const headerRef = useFadeIn();
-  const gridRef   = useFadeIn();
+  const gridRef = useFadeIn();
 
   useEffect(() => {
     fetch('/api/index.php?route=products')
@@ -56,12 +67,29 @@ export default function Products({ onOpenQuote }) {
       .catch(err => console.error('Could not load products, using fallback', err));
   }, []);
 
+  const handleProductImageError = (e, product) => {
+    const image = e.currentTarget;
+    const fallbackImage = fallbackImageByProductName[product.name];
+
+    // Try the bundled image once if an API-provided path fails.
+    if (fallbackImage && image.dataset.fallbackApplied !== 'true') {
+      image.dataset.fallbackApplied = 'true';
+      if (image.getAttribute('src') !== fallbackImage) {
+        image.src = fallbackImage;
+        return;
+      }
+    }
+
+    // Don't leave a large empty image-shaped area if neither source exists.
+    image.style.display = 'none';
+  };
+
   const handleGetQuote = (e, product) => {
     e.preventDefault();
     // Pass the product object so the modal can prefill it.
     // product.id exists only for DB-sourced products; fallback products have no id.
     onOpenQuote({
-      id:   product.id   ?? null,
+      id: product.id ?? null,
       name: product.name ?? '',
     });
   };
@@ -79,7 +107,13 @@ export default function Products({ onOpenQuote }) {
           {products.map((product) => (
             <div key={product.name} className="product-card">
               <div className="product-image-wrapper">
-                <img src={product.image_path} className="product-image" loading="lazy" alt={product.name} />
+                <img
+                  src={product.image_path || fallbackImageByProductName[product.name] || ''}
+                  className="product-image"
+                  loading="lazy"
+                  alt={product.name}
+                  onError={(e) => handleProductImageError(e, product)}
+                />
               </div>
               <div className="product-info">
                 <span className="product-category">{product.category}</span>
