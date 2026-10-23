@@ -40,15 +40,45 @@ const fallbackProducts = [
   },
 ];
 
-// These local images ship with the frontend, so they can recover a product card
-// if a database image URL/path is stale or points to an unavailable upload.
 const fallbackImageByProductName = {
-  'MCC Panel': '/images/mcc_panel_1791435907074.jpg',
-  'PCC Panel': '/images/pcc_panel_1791435921126.jpg',
-  'VFD Panel': '/images/vfd_panel_1791435937888.jpg',
-  'APFC Panel': '/images/apfc_panel_1791435963764.jpg',
-  'Distribution Board': '/images/distribution_board_1791435976000.jpg',
-  'Control Panel': '/images/control_panel_1791435990845.jpg',
+  'mcc panel': '/images/mcc_panel_1791435907074.jpg',
+  'pcc panel': '/images/pcc_panel_1791435921126.jpg',
+  'vfd panel': '/images/vfd_panel_1791435937888.jpg',
+  'apfc panel': '/images/apfc_panel_1791435963764.jpg',
+  'distribution board': '/images/distribution_board_1791435976000.jpg',
+  'distribution boards': '/images/distribution_board_1791435976000.jpg',
+  'control panel': '/images/control_panel_1791435990845.jpg',
+  'custom control panel': '/images/control_panel_1791435990845.jpg',
+};
+
+// Older database rows point to these filenames, which do not exist in public/images.
+// Map them to the real bundled images so existing hosted data works without waiting
+// for a database migration.
+const legacyImagePathMap = {
+  '/images/mcc.jpg': '/images/mcc_panel_1791435907074.jpg',
+  '/images/pcc.jpg': '/images/pcc_panel_1791435921126.jpg',
+  '/images/apfc.jpg': '/images/apfc_panel_1791435963764.jpg',
+  '/images/db.jpg': '/images/distribution_board_1791435976000.jpg',
+  '/images/vfd.jpg': '/images/vfd_panel_1791435937888.jpg',
+  '/images/custom.jpg': '/images/control_panel_1791435990845.jpg',
+};
+
+const normalizeName = (name = '') => name.trim().toLowerCase();
+
+const getFallbackImage = (product) => {
+  const databasePath = product.image_path?.trim().toLowerCase();
+  return (databasePath && legacyImagePathMap[databasePath])
+    || fallbackImageByProductName[normalizeName(product.name)]
+    || '';
+};
+
+const getProductImagePath = (product) => {
+  const databasePath = product.image_path?.trim();
+  const legacyFallback = databasePath
+    ? legacyImagePathMap[databasePath.toLowerCase()]
+    : null;
+
+  return legacyFallback || databasePath || getFallbackImage(product);
 };
 
 export default function Products({ onOpenQuote }) {
@@ -58,9 +88,12 @@ export default function Products({ onOpenQuote }) {
 
   useEffect(() => {
     fetch('/api/index.php?route=products')
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error(`Products API returned ${res.status}`);
+        return res.json();
+      })
       .then(data => {
-        if (data && data.length > 0) {
+        if (Array.isArray(data) && data.length > 0) {
           setProducts(data);
         }
       })
@@ -69,25 +102,24 @@ export default function Products({ onOpenQuote }) {
 
   const handleProductImageError = (e, product) => {
     const image = e.currentTarget;
-    const fallbackImage = fallbackImageByProductName[product.name];
+    const fallbackImage = getFallbackImage(product);
 
-    // Try the bundled image once if an API-provided path fails.
-    if (fallbackImage && image.dataset.fallbackApplied !== 'true') {
+    if (
+      fallbackImage
+      && image.dataset.fallbackApplied !== 'true'
+      && image.getAttribute('src') !== fallbackImage
+    ) {
       image.dataset.fallbackApplied = 'true';
-      if (image.getAttribute('src') !== fallbackImage) {
-        image.src = fallbackImage;
-        return;
-      }
+      image.src = fallbackImage;
+      return;
     }
 
-    // Don't leave a large empty image-shaped area if neither source exists.
+    // Avoid leaving a large empty image-shaped area if both sources fail.
     image.style.display = 'none';
   };
 
   const handleGetQuote = (e, product) => {
     e.preventDefault();
-    // Pass the product object so the modal can prefill it.
-    // product.id exists only for DB-sourced products; fallback products have no id.
     onOpenQuote({
       id: product.id ?? null,
       name: product.name ?? '',
@@ -108,7 +140,7 @@ export default function Products({ onOpenQuote }) {
             <div key={product.name} className="product-card">
               <div className="product-image-wrapper">
                 <img
-                  src={product.image_path || fallbackImageByProductName[product.name] || ''}
+                  src={getProductImagePath(product)}
                   className="product-image"
                   loading="lazy"
                   alt={product.name}
