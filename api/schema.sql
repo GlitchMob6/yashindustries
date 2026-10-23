@@ -36,35 +36,35 @@ CREATE TABLE IF NOT EXISTS `inquiries` (
 
 -- Insert a default admin account (password: root)
 -- Hash generated via standard password_hash() using BCRYPT
-INSERT INTO `admins` (`username`, `password_hash`) 
-SELECT 'admin', '$2y$10$9jrlCtlbvfIT9xdZRcEcrefjQZm8IWIvh6jUHG8ojr7h202r6eQdO' 
+INSERT INTO `admins` (`username`, `password_hash`)
+SELECT 'admin', '$2y$10$9jrlCtlbvfIT9xdZRcEcrefjQZm8IWIvh6jUHG8ojr7h202r6eQdO'
 WHERE NOT EXISTS (SELECT 1 FROM `admins` WHERE `username` = 'admin');
 
--- Seed existing products
+-- Seed product image paths using the actual filenames in public/images.
 INSERT INTO `products` (`slug`, `name`, `description`, `category`, `image_path`, `is_published`) VALUES
-('mcc-panel', 'MCC Panel', 'Motor Control Center panel for centralized motor control.', 'LV PANEL', '/images/mcc.jpg', 1),
-('pcc-panel', 'PCC Panel', 'Power Control Center panel for main power distribution.', 'LV PANEL', '/images/pcc.jpg', 1),
-('apfc-panel', 'APFC Panel', 'Automatic Power Factor Correction panel for energy efficiency.', 'LV PANEL', '/images/apfc.jpg', 1),
-('distribution-boards', 'Distribution Boards', 'Customizable power distribution boards for various applications.', 'DISTRIBUTION', '/images/db.jpg', 1),
-('vfd-panel', 'VFD Panel', 'Variable Frequency Drive panels for precise speed control.', 'DRIVES', '/images/vfd.jpg', 1),
-('custom-control-panel', 'Custom Control Panel', 'Bespoke control panels tailored to your unique industrial requirements.', 'CUSTOM', '/images/custom.jpg', 1)
-ON DUPLICATE KEY UPDATE `id`=`id`;
+('mcc-panel', 'MCC Panel', 'Motor Control Center panel for centralized motor control.', 'LV PANEL', '/images/mcc_panel_1791435907074.jpg', 1),
+('pcc-panel', 'PCC Panel', 'Power Control Center panel for main power distribution.', 'LV PANEL', '/images/pcc_panel_1791435921126.jpg', 1),
+('apfc-panel', 'APFC Panel', 'Automatic Power Factor Correction panel for energy efficiency.', 'LV PANEL', '/images/apfc_panel_1791435963764.jpg', 1),
+('distribution-boards', 'Distribution Boards', 'Customizable power distribution boards for various applications.', 'DISTRIBUTION', '/images/distribution_board_1791435976000.jpg', 1),
+('vfd-panel', 'VFD Panel', 'Variable Frequency Drive panels for precise speed control.', 'DRIVES', '/images/vfd_panel_1791435937888.jpg', 1),
+('custom-control-panel', 'Custom Control Panel', 'Bespoke control panels tailored to your unique industrial requirements.', 'CUSTOM', '/images/control_panel_1791435990845.jpg', 1)
+ON DUPLICATE KEY UPDATE `id` = `id`;
 
 -- Job Applications table (added 2026 — run api/migrations/2026_add_job_applications.sql on existing databases)
 CREATE TABLE IF NOT EXISTS `job_applications` (
-  `id`         INT AUTO_INCREMENT PRIMARY KEY,
-  `app_ref`    VARCHAR(20)  NOT NULL UNIQUE,
-  `name`       VARCHAR(150) NOT NULL,
-  `email`      VARCHAR(150) NOT NULL,
-  `phone`      VARCHAR(30)  NOT NULL,
-  `location`   VARCHAR(150),
-  `position`   VARCHAR(100) NOT NULL,
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `app_ref` VARCHAR(20) NOT NULL UNIQUE,
+  `name` VARCHAR(150) NOT NULL,
+  `email` VARCHAR(150) NOT NULL,
+  `phone` VARCHAR(30) NOT NULL,
+  `location` VARCHAR(150),
+  `position` VARCHAR(100) NOT NULL,
   `experience` ENUM('Fresher','1–3 years','3–5 years','5+ years') NOT NULL,
   `resume_url` VARCHAR(500),
-  `message`    TEXT         NOT NULL,
-  `status`     ENUM('New','Reviewing','Shortlisted','Rejected') DEFAULT 'New',
+  `message` TEXT NOT NULL,
+  `status` ENUM('New','Reviewing','Shortlisted','Rejected') DEFAULT 'New',
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  INDEX idx_ja_status  (`status`),
+  INDEX idx_ja_status (`status`),
   INDEX idx_ja_created (`created_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
